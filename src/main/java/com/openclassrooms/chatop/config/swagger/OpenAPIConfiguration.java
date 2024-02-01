@@ -16,7 +16,7 @@ public class OpenAPIConfiguration {
    public OpenAPI defineOpenApi() {
        Server server = new Server();
        server.setUrl("http://localhost:3001");
-       server.setDescription("Development");
+       server.setDescription("Documentation API Rental");
 
        Contact myContact = new Contact();
        myContact.setName("Jane Doe");

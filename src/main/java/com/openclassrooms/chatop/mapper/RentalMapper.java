@@ -1,6 +1,6 @@
 package com.openclassrooms.chatop.mapper;
 
-import com.openclassrooms.chatop.dto.RentalDto;
+import com.openclassrooms.chatop.dto.RentalInDto;
 import com.openclassrooms.chatop.model.Rental;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface RentalMapper {
 
-    RentalDto rentalToRentalDto(Rental rental);
+    RentalInDto rentalToRentalDto(Rental rental);
 
-    Rental rentalDtoToRental(RentalDto rentalDto);
+    Rental rentalDtoToRental(RentalInDto rentalInDto);
 
-    List<RentalDto> rentalsToRentalsDto(List<Rental> rentals);
+    List<RentalInDto> rentalsToRentalsDto(List<Rental> rentals);
 
-    List<Rental> rentalsDtoToRentals(List<RentalDto> rentalsDto);
+    List<Rental> rentalsDtoToRentals(List<RentalInDto> rentalsDto);
 }

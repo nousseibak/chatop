@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RentalDto implements Serializable {
+public class RentalInDto implements Serializable {
 
     @JsonProperty("id")
     private Integer id;

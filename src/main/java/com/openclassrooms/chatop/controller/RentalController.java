@@ -1,6 +1,6 @@
 package com.openclassrooms.chatop.controller;
 
-import com.openclassrooms.chatop.dto.RentalDto;
+import com.openclassrooms.chatop.dto.RentalInDto;
 import com.openclassrooms.chatop.dto.RentalOutDto;
 import com.openclassrooms.chatop.mapper.RentalMapper;
 import com.openclassrooms.chatop.mapper.RentalOutMapper;
@@ -51,7 +51,7 @@ public class RentalController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental found", content = {
                     @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = RentalDto.class))
+                            schema = @Schema(implementation = RentalInDto.class))
             }),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
@@ -76,15 +76,15 @@ public class RentalController {
             @ApiResponse(responseCode = "200", description = "Rental created"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)
     })
-    public ResponseEntity<String> createRental(@RequestBody RentalDto rentalDto) {
+    public ResponseEntity<String> createRental(@RequestBody RentalInDto rentalInDto) {
 
-        if (rentalDto.getName() == null || rentalDto.getSurface() == null || rentalDto.getPrice() == null || rentalDto.getDescription() == null) {
+        if (rentalInDto.getName() == null || rentalInDto.getSurface() == null || rentalInDto.getPrice() == null || rentalInDto.getDescription() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
-        System.out.println("rentalDto "+ rentalDto);
-        Rental rental = rentalMapper.rentalDtoToRental(rentalDto);
+        System.out.println("rentalDto "+ rentalInDto);
+        Rental rental = rentalMapper.rentalDtoToRental(rentalInDto);
         System.out.println("rental "+ rental);
-        rental.setOwner(userService.getUserById(rentalDto.getOwnerId()));
+        rental.setOwner(userService.getUserById(rentalInDto.getOwnerId()));
         System.out.println("rental "+ rental);
         rentalService.saveRental(rental);
 
@@ -100,9 +100,9 @@ public class RentalController {
     })
     public ResponseEntity<String> updateRental(
             @Parameter(description = "ID of the rental to be updated", required = true)
-            @PathVariable Integer rentalId, @RequestBody RentalDto rentalDto) {
+            @PathVariable Integer rentalId, @RequestBody RentalInDto rentalInDto) {
 
-        if (rentalDto.getName() == null || rentalDto.getSurface() == null || rentalDto.getPrice() == null || rentalDto.getDescription() == null) {
+        if (rentalInDto.getName() == null || rentalInDto.getSurface() == null || rentalInDto.getPrice() == null || rentalInDto.getDescription() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
 
@@ -112,11 +112,11 @@ public class RentalController {
             return ResponseEntity.notFound().build();
         }
 
-        existingRental.setName(rentalDto.getName());
-        existingRental.setSurface(rentalDto.getSurface());
-        existingRental.setPrice(rentalDto.getPrice());
-        existingRental.setDescription(rentalDto.getDescription());
-        existingRental.setOwner(userService.getUserById(rentalDto.getOwnerId()));
+        existingRental.setName(rentalInDto.getName());
+        existingRental.setSurface(rentalInDto.getSurface());
+        existingRental.setPrice(rentalInDto.getPrice());
+        existingRental.setDescription(rentalInDto.getDescription());
+        existingRental.setOwner(userService.getUserById(rentalInDto.getOwnerId()));
 
         rentalService.saveRental(existingRental);
 
