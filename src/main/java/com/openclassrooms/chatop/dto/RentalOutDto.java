@@ -1,6 +1,7 @@
 package com.openclassrooms.chatop.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.openclassrooms.chatop.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,19 +14,28 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MessageDto implements Serializable {
+public class RentalOutDto implements Serializable {
 
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("rental_Id")
-    private Integer rentalId;
+    @JsonProperty("name")
+    private String name;
 
-    @JsonProperty("user_Id")
-    private Integer userId;
+    @JsonProperty("surface")
+    private Double surface;
 
-    @JsonProperty("message")
-    private String message;
+    @JsonProperty("price")
+    private Double price;
+
+    @JsonProperty("picture")
+    private String picture;
+
+    @JsonProperty("description")
+    private String description;
+
+    @JsonProperty("Owner")
+    private UserDto owner;
 
     @JsonProperty("createdAt")
     private Date createdAt;

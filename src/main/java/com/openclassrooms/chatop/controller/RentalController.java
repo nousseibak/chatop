@@ -1,7 +1,9 @@
 package com.openclassrooms.chatop.controller;
 
 import com.openclassrooms.chatop.dto.RentalDto;
+import com.openclassrooms.chatop.dto.RentalOutDto;
 import com.openclassrooms.chatop.mapper.RentalMapper;
+import com.openclassrooms.chatop.mapper.RentalOutMapper;
 import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.service.RentalService;
 import com.openclassrooms.chatop.service.UserService;
@@ -30,14 +32,18 @@ public class RentalController {
     private RentalMapper rentalMapper;
 
     @Autowired
+    private RentalOutMapper rentalOutMapper;
+
+    @Autowired
     private UserService userService;
 
-    @GetMapping
+
     @Operation(summary = "Get all rentals", description = "Get a list of all rentals")
-    public ResponseEntity<List<RentalDto>> getAllRentals() {
+    @GetMapping("")
+    public ResponseEntity<List<RentalOutDto>> getAllRentals() {
         List<Rental> rentals = rentalService.getAllRentals();
-        List<RentalDto> rentalDtos = rentalMapper.rentalsToRentalsDto(rentals);
-        return ResponseEntity.ok(rentalDtos);
+        List<RentalOutDto> rentalOutDtos = rentalOutMapper.rentalsToRentalsOutDto(rentals);
+        return ResponseEntity.ok(rentalOutDtos);
     }
 
     @GetMapping("/{rentalId}")
@@ -49,21 +55,22 @@ public class RentalController {
             }),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
-    public ResponseEntity<RentalDto> getRentalById(
+    public ResponseEntity<RentalOutDto> getRentalById(
             @Parameter(description = "ID of the rental to be retrieved", required = true)
             @PathVariable Integer rentalId) {
 
         Rental rental = rentalService.getRentalById(rentalId);
-
+        System.out.println("rental "+rental);
         if (rental != null) {
-            RentalDto rentalDto = rentalMapper.rentalToRentalDto(rental);
-            return ResponseEntity.ok(rentalDto);
+            RentalOutDto rentalOutDto = rentalOutMapper.rentalToRentalOutDto(rental);
+            System.out.println("rentalOutDto "+rentalOutDto);
+            return ResponseEntity.ok(rentalOutDto);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PostMapping
+    @PostMapping("/")
     @Operation(summary = "Create rental", description = "Create a new rental")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental created"),
@@ -74,8 +81,11 @@ public class RentalController {
         if (rentalDto.getName() == null || rentalDto.getSurface() == null || rentalDto.getPrice() == null || rentalDto.getDescription() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
-
+        System.out.println("rentalDto "+ rentalDto);
         Rental rental = rentalMapper.rentalDtoToRental(rentalDto);
+        System.out.println("rental "+ rental);
+        rental.setOwner(userService.getUserById(rentalDto.getOwnerId()));
+        System.out.println("rental "+ rental);
         rentalService.saveRental(rental);
 
         return ResponseEntity.ok("Rental created!");
@@ -106,6 +116,7 @@ public class RentalController {
         existingRental.setSurface(rentalDto.getSurface());
         existingRental.setPrice(rentalDto.getPrice());
         existingRental.setDescription(rentalDto.getDescription());
+        existingRental.setOwner(userService.getUserById(rentalDto.getOwnerId()));
 
         rentalService.saveRental(existingRental);
 
