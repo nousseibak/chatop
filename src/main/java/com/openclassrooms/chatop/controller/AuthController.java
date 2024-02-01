@@ -57,16 +57,16 @@ public class AuthController {
         return ResponseEntity.ok("token");
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "Login user", description = "Authenticate and log in a user with email and password")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
-    })
-    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
-
-        return ResponseEntity.ok("token");
-    }
+//    @PostMapping("/login")
+//    @Operation(summary = "Login user", description = "Authenticate and log in a user with email and password")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content),
+//            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+//    })
+//    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
+//
+//        return ResponseEntity.ok("token");
+//    }
 
 //    @GetMapping("/me")
 //    @Operation(summary = "Get current user", description = "Get details of the currently authenticated user")
