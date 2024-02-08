@@ -7,16 +7,19 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 # Technologies Utilisées :
 
 - Java 17
-- Spring Boot
+- Spring Boot 3.2.2
 - Spring Security avec authentification via JWT
 - Base de donnée MySQL
 - Documentation avec swagger
   
 # Dépendandances ajoutées au projet :
 
-- Lambok
+- Lombok
+- Mapstruct
+- SpringDoc pour le Swagger
+- Mysql
 - Spring Security
-- Swagger
+- Jsonwebtoken
 
 # Outils utilisés :
 - Intellij
