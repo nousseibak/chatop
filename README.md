@@ -30,15 +30,18 @@ Avec Git, cloner le projet : https://github.com/nousseibak/chatop.git
 Ouvrir le projet avec Intellij
 
 Ajout de la base de données :
+
 - Démarrer MySql
 - Créer une base de données nommée chatop
 - Importez le script qui se trouve à l'adresse : ressources/sql/script.sql
 - Modifier le fichier properties dans resources avec les données de votre compte mySql et de la base de donnée créée
 
 Clean install le projet
+
 Lancer le projet 
 
 Pour accéder à la documentation swagger:
+
 Dans votre navigateur :
 localhost:3030//api/swagger-ui/index.html
 
