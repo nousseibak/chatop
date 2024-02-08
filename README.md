@@ -21,6 +21,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 # Outils utilisés :
 - Intellij
 - Postman pour tester l'application
+- MySql
 
 
 # Pour lancer le projet le projet:
