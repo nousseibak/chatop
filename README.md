@@ -35,13 +35,15 @@ Ajout de la base de données :
 - Démarrer MySql
 - Créer une base de données nommée chatop
 - Importez le script qui se trouve à l'adresse : ressources/sql/script.sql
-- Modifier le fichier properties dans resources avec les données de votre compte mySql et de la base de donnée créée
+
+Dans le projet, modifier le fichier properties dans src/main/resources/application.properties avec les données de votre compte mySql et de la base de donnée créée
 
 Clean install le projet
 
 Lancer le projet 
 
-Pour accéder à la documentation swagger et pouvoir tester l'application :
+
+# Pour accéder à la documentation swagger et pouvoir tester l'application :
 
 Dans votre navigateur :
 
