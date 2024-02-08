@@ -26,6 +26,18 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 - Postman pour tester l'application
 - MySql
 
+# Structure du projet :
+
+-controller
+-config
+  -security
+  -swagger
+-model
+-dto
+-mapper
+-repository
+-service
+
 
 # Pour lancer le projet le projet:
 
@@ -49,8 +61,8 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 # Pour accéder à la documentation swagger et pouvoir tester l'application :
 Dans votre navigateur, aller à l'adresse :
 
-localhost:3001/api/swagger-ui/index.html
-
+http://localhost:3001/api/api-docs
+http://localhost:3001/api/swagger-ui/index.html
 
 
 
