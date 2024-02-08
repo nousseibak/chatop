@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "USERS")
-public class User {
+public class DbUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Transient
+    private String role= "USER";
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

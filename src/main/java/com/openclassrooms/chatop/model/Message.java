@@ -22,7 +22,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private DbUser dbUser;
 
     @Column(name = "message", length = 2000)
     private String message;

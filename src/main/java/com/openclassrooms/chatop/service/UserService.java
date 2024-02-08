@@ -1,12 +1,11 @@
 package com.openclassrooms.chatop.service;
 
-import com.openclassrooms.chatop.model.User;
+import com.openclassrooms.chatop.model.DbUser;
 import com.openclassrooms.chatop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -14,16 +13,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
+    public List<DbUser> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User getUserById(Integer userId) {
+    public DbUser getUserById(Integer userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public DbUser saveUser(DbUser dbUser) {
+        return userRepository.save(dbUser);
     }
 
     public void deleteUser(Integer userId) {

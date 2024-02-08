@@ -1,7 +1,6 @@
 package com.openclassrooms.chatop.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.openclassrooms.chatop.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

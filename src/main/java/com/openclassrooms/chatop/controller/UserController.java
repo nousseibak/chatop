@@ -2,7 +2,7 @@ package com.openclassrooms.chatop.controller;
 
 import com.openclassrooms.chatop.dto.UserDto;
 import com.openclassrooms.chatop.mapper.UserMapper;
-import com.openclassrooms.chatop.model.User;
+import com.openclassrooms.chatop.model.DbUser;
 import com.openclassrooms.chatop.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,10 +42,10 @@ public class UserController {
             @Parameter(description = "ID of the user to be retrieved", required = true)
             @PathVariable Integer userId) {
 
-        User user = userService.getUserById(userId);
+        DbUser dbUser = userService.getUserById(userId);
 
-        if (user != null) {
-            UserDto userDto = userMapper.userToUserDto(user);
+        if (dbUser != null) {
+            UserDto userDto = userMapper.userToUserDto(dbUser);
             return ResponseEntity.ok(userDto);
         } else {
             return ResponseEntity.notFound().build();

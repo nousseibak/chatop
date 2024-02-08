@@ -33,7 +33,7 @@ public class Rental {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    private DbUser owner;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

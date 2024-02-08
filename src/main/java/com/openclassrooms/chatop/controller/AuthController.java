@@ -1,21 +1,22 @@
 package com.openclassrooms.chatop.controller;
 
-import com.openclassrooms.chatop.dto.UserDto;
+import com.openclassrooms.chatop.dto.JWTAuthResponse;
 import com.openclassrooms.chatop.dto.UserLoginDto;
 import com.openclassrooms.chatop.dto.UserRegisterDto;
 import com.openclassrooms.chatop.mapper.UserLoginMapper;
 import com.openclassrooms.chatop.mapper.UserMapper;
 import com.openclassrooms.chatop.mapper.UserRegisterMapper;
-import com.openclassrooms.chatop.model.User;
+import com.openclassrooms.chatop.model.DbUser;
+import com.openclassrooms.chatop.service.AuthService;
 import com.openclassrooms.chatop.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,10 @@ public class AuthController {
     @Autowired
     private UserRegisterMapper userRegisterMapper;
 
+    @Autowired
+    private AuthService authService;
+
+
 
     @Operation(summary = "Register user", description = "Register a new user with email, name, and password")
     @ApiResponses(value = {
@@ -51,22 +56,27 @@ public class AuthController {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
 
-        User user = userRegisterMapper.userRegisterDtoToUser(userRegisterDto);
-        userService.saveUser(user);
-
-        return ResponseEntity.ok("token");
+        String response = authService.register(userRegisterDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-//    @PostMapping("/login")
-//    @Operation(summary = "Login user", description = "Authenticate and log in a user with email and password")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content),
-//            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
-//    })
-//    public ResponseEntity<String> loginUser(@RequestBody UserLoginDto userLoginDto) {
-//
-//        return ResponseEntity.ok("token");
-//    }
+    @PostMapping("/login")
+    @Operation(summary = "Login user", description = "Authenticate and log in a user with email and password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
+public ResponseEntity<JWTAuthResponse> login(@RequestBody UserLoginDto loginDto) {
+    String token = authService.login(loginDto);
+
+    JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+    jwtAuthResponse.setAccessToken(token);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Authorization", "Bearer " + token);
+
+    return ResponseEntity.ok().headers(headers).body(jwtAuthResponse);
+}
 
 //    @GetMapping("/me")
 //    @Operation(summary = "Get current user", description = "Get details of the currently authenticated user")
