@@ -62,6 +62,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 Dans votre navigateur, aller à l'adresse :
 
 http://localhost:3001/api/api-docs
+
 http://localhost:3001/api/swagger-ui/index.html
 
 
