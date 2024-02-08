@@ -46,7 +46,7 @@ Lancer le projet
 # Pour accéder à la documentation swagger et pouvoir tester l'application :
 Dans votre navigateur :
 
-localhost:3030//api/swagger-ui/index.html
+localhost:3301/api/swagger-ui/index.html
 
 
 
