@@ -39,7 +39,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 - service
 
 
-# Pour lancer le projet le projet:
+# Pour lancer le projet :
 
 -Avec Git, cloner le projet : https://github.com/nousseibak/chatop.git
 
