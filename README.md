@@ -61,9 +61,9 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 # Pour accéder à la documentation swagger et pouvoir tester l'application :
 Dans votre navigateur, aller à l'adresse :
 
-http://localhost:3001/api/api-docs
+- http://localhost:3001/api/api-docs
 
-http://localhost:3001/api/swagger-ui/index.html
+- http://localhost:3001/api/swagger-ui/index.html
 
 
 
