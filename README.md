@@ -28,15 +28,15 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 
 # Structure du projet :
 
--controller
--config
-  -security
-  -swagger
--model
--dto
--mapper
--repository
--service
+- controller
+- config
+  - security
+  - swagger
+- model
+- dto
+- mapper
+- repository
+- service
 
 
 # Pour lancer le projet le projet:
