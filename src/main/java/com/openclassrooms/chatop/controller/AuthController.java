@@ -1,6 +1,6 @@
 package com.openclassrooms.chatop.controller;
 
-import com.openclassrooms.chatop.dto.JWTAuthResponse;
+
 import com.openclassrooms.chatop.dto.UserDto;
 import com.openclassrooms.chatop.dto.UserLoginDto;
 import com.openclassrooms.chatop.dto.UserRegisterDto;
@@ -20,14 +20,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -82,7 +78,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @PostMapping("/login")
-public ResponseEntity login(@RequestBody UserLoginDto loginDto) {
+    public ResponseEntity login(@RequestBody UserLoginDto loginDto) {
         if (loginDto.getEmail() == null || loginDto.getPassword() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
@@ -110,28 +106,28 @@ public ResponseEntity login(@RequestBody UserLoginDto loginDto) {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/me")
-        public ResponseEntity<UserDto> getCurrentUser() {
-            // Récupérer l'authentification à partir du contexte de sécurité
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<UserDto> getCurrentUser() {
+        // Récupérer l'authentification à partir du contexte de sécurité
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            // Vérifier si l'utilisateur est authentifié
-            if (authentication != null && authentication.isAuthenticated()) {
-                // Récupérer les détails de l'utilisateur à partir de l'authentification
-                CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        // Vérifier si l'utilisateur est authentifié
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Récupérer les détails de l'utilisateur à partir de l'authentification
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-                UserDto userDto = new UserDto();
-                userDto.setEmail(userDetails.getUsername());
-                userDto.setName(userDetails.getName());
-                userDto.setId(userDetails.getId());
-                userDto.setCreatedAt(userDetails.getCreatedAt());
-                userDto.setUpdatedAt(userDetails.getUpdatedAt());
+            UserDto userDto = new UserDto();
+            userDto.setEmail(userDetails.getUsername());
+            userDto.setName(userDetails.getName());
+            userDto.setId(userDetails.getId());
+            userDto.setCreatedAt(userDetails.getCreatedAt());
+            userDto.setUpdatedAt(userDetails.getUpdatedAt());
 
-                return ResponseEntity.ok(userDto);
-            } else {
+            return ResponseEntity.ok(userDto);
+        } else {
 
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
     }
+
+}
 
