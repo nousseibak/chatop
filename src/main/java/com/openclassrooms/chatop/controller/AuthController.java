@@ -7,6 +7,7 @@ import com.openclassrooms.chatop.mapper.UserLoginMapper;
 import com.openclassrooms.chatop.mapper.UserMapper;
 import com.openclassrooms.chatop.mapper.UserRegisterMapper;
 import com.openclassrooms.chatop.model.DbUser;
+import com.openclassrooms.chatop.model.ErrorRes;
 import com.openclassrooms.chatop.service.AuthService;
 import com.openclassrooms.chatop.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -55,27 +57,37 @@ public class AuthController {
         if (userRegisterDto.getEmail() == null || userRegisterDto.getName() == null || userRegisterDto.getPassword() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
-
+        DbUser user=userService.findByEmail(userRegisterDto.getEmail());
+        if (user!=null){
+            return ResponseEntity.badRequest().body("400 Bad Request: Email exists already");
+        }
         String response = authService.register(userRegisterDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+
     @Operation(summary = "Login user", description = "Authenticate and log in a user with email and password")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User logged in successfully", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
-public ResponseEntity<JWTAuthResponse> login(@RequestBody UserLoginDto loginDto) {
-    String token = authService.login(loginDto);
+    @PostMapping("/login")
+public ResponseEntity login(@RequestBody UserLoginDto loginDto) {
+       if (loginDto.getEmail() == null || loginDto.getPassword() == null) {
+            return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
+        }
+        DbUser user=userService.findByEmail(loginDto.getEmail());
+        if (user==null){
+            return ResponseEntity.badRequest().body("400 Bad Request: Invalid username or password");
+        }
+     try {
+        return ResponseEntity.ok(authService.login(loginDto));
 
-    JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
-    jwtAuthResponse.setAccessToken(token);
+    }catch (Exception e){
+        ErrorRes errorResponse = new ErrorRes(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", "Bearer " + token);
-
-    return ResponseEntity.ok().headers(headers).body(jwtAuthResponse);
 }
 
 //    @GetMapping("/me")

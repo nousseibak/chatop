@@ -16,6 +16,14 @@ public class DbUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    public DbUser() {
+    }
+
+    public DbUser(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
@@ -25,8 +33,6 @@ public class DbUser {
     @Column(name = "password")
     private String password;
 
-    @Transient
-    private String role= "USER";
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

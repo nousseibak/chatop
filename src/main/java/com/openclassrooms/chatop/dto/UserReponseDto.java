@@ -12,12 +12,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLoginDto implements Serializable {
+public class UserReponseDto implements Serializable {
 
-    @JsonProperty("login")
+    @JsonProperty("email")
     private String email;
 
-    @JsonProperty("password")
-    private String password;
+    @JsonProperty("token")
+    private String token;
+
+
 
 }
