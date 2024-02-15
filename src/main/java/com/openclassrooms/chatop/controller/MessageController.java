@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/messages")
 @Tag(name = "Message Controller", description = "APIs for managing messages")
 public class MessageController {
 
