@@ -1,5 +1,7 @@
 package com.openclassrooms.chatop.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.chatop.config.media.FileHelper;
 import com.openclassrooms.chatop.dto.RentalInDto;
 import com.openclassrooms.chatop.dto.RentalOutDto;
 import com.openclassrooms.chatop.mapper.RentalMapper;
@@ -16,8 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -81,15 +86,24 @@ public class RentalController {
             @ApiResponse(responseCode = "200", description = "Rental created"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)
     })
-    public ResponseEntity<String> createRental(@RequestBody RentalInDto rentalInDto) {
+    public ResponseEntity<String> createRental(@RequestPart("rentalDto") String rentalDto, @RequestPart(value="picture", required = true)  MultipartFile media) throws IOException {
+        System.out.println("hello ");
 
+        RentalInDto rentalInDto=new ObjectMapper().readValue(rentalDto, RentalInDto.class);
         if (rentalInDto.getName() == null || rentalInDto.getSurface() == null || rentalInDto.getPrice() == null || rentalInDto.getDescription() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
         Rental rental = rentalMapper.rentalDtoToRental(rentalInDto);
         rental.setOwner(userService.getUserById(rentalInDto.getOwnerId()));
-        rentalService.saveRental(rental);
 
+        String fileName = StringUtils.cleanPath(media.getOriginalFilename());
+        rental.setPicture(fileName);
+
+
+        Rental rentalcreated= rentalService.saveRental(rental);
+        String uploadDir = "media/" + rentalcreated.getId();
+        FileHelper.saveFile(uploadDir, fileName, media);
+        System.out.println("rentalcreated "+rentalcreated);
         return ResponseEntity.ok("Rental created!");
     }
 
