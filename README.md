@@ -50,7 +50,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 
 - Démarrer MySql
 - Créer une base de données nommée chatop
-- Importez le script qui se trouve à l'adresse : ressources/sql/script.sql pour ajouter des tables dans la base créé
+- Importez le script qui se trouve à l'adresse : ressources/sql/script.sql pour ajouter des tables dans la base créée
 
 -Dans le projet, modifier le fichier application.properties situé dans src/main/resources/ avec les données de votre compte mySql et de la base de donnée créée
 
