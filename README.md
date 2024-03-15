@@ -32,6 +32,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 - config
   - security
   - swagger
+  - media
 - model
 - dto
 - mapper
@@ -43,7 +44,7 @@ Les utilisateurs (locataires ou propriétaires) peuvent : s'enregistrer, se conn
 
 -Avec Git, cloner le projet : https://github.com/nousseibak/chatop.git
 
--Ouvrir le projet avec Intellij
+-Ouvrir le projet avec un IDE
 
 -Ajout de la base de données :
 
