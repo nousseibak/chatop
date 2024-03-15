@@ -4,6 +4,7 @@ package com.openclassrooms.chatop.service;
 import com.openclassrooms.chatop.model.CustomUserDetails;
 import com.openclassrooms.chatop.model.DbUser;
 import com.openclassrooms.chatop.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

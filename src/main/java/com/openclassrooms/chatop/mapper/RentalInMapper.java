@@ -8,7 +8,7 @@ import org.mapstruct.ReportingPolicy;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public interface RentalMapper {
+public interface RentalInMapper {
 
     RentalInDto rentalToRentalDto(Rental rental);
 

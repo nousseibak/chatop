@@ -1,6 +1,6 @@
 package com.openclassrooms.chatop.controller;
 
-
+import com.openclassrooms.chatop.dto.ErrorResDto;
 import com.openclassrooms.chatop.dto.UserDto;
 import com.openclassrooms.chatop.dto.UserLoginDto;
 import com.openclassrooms.chatop.dto.UserRegisterDto;
@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication Controller", description = "APIs for user authentication and authorization")
 public class AuthController {
-
 
 
     @Autowired
@@ -52,14 +56,13 @@ public class AuthController {
     private CustomUserDetailsService detailsService;
 
 
-
     @Operation(summary = "Register user", description = "Register a new user with email, name, and password")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User registered successfully", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)
     })
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDto userRegisterDto) {
+    public ResponseEntity registerUser(@RequestBody UserRegisterDto userRegisterDto) {
         if (userRegisterDto.getEmail() == null || userRegisterDto.getName() == null || userRegisterDto.getPassword() == null) {
             return ResponseEntity.badRequest().body("400 Bad Request: All variables must be provided");
         }
@@ -67,8 +70,8 @@ public class AuthController {
         if (user!=null){
             return ResponseEntity.badRequest().body("400 Bad Request: Email exists already");
         }
-        String response = authService.register(userRegisterDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        return ResponseEntity.ok(authService.register(userRegisterDto));
     }
 
 
@@ -90,8 +93,7 @@ public class AuthController {
             return ResponseEntity.ok(authService.login(loginDto));
 
         } catch (Exception e) {
-            ErrorRes errorResponse = new ErrorRes(HttpStatus.BAD_REQUEST, e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResDto("error"));
         }
 
     }
@@ -119,8 +121,8 @@ public class AuthController {
             userDto.setEmail(userDetails.getUsername());
             userDto.setName(userDetails.getName());
             userDto.setId(userDetails.getId());
-            userDto.setCreatedAt(userDetails.getCreatedAt());
-            userDto.setUpdatedAt(userDetails.getUpdatedAt());
+            userDto.setCreatedAt(userDetails.getCreatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            userDto.setUpdatedAt(userDetails.getUpdatedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
             return ResponseEntity.ok(userDto);
         } else {
@@ -128,6 +130,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
 
 }
 

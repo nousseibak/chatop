@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -18,16 +19,16 @@ public class UserDto implements Serializable {
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("email")
-    private String email;
-
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("email")
+    private String email;
 
-    @JsonProperty("createdAt")
-    private Date createdAt;
+    @JsonProperty("created_at")
+    private LocalDate createdAt;
 
-    @JsonProperty("updatedAt")
-    private Date updatedAt;
+    @JsonProperty("updated_at")
+    private LocalDate updatedAt;
+
 }

@@ -24,8 +24,6 @@ public class SecurityConfig  {
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthorizationFilter jwtAuthorizationFilter) {
         this.userDetailsService = customUserDetailsService;
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-
-
     }
 
     @Bean
@@ -40,8 +38,8 @@ public class SecurityConfig  {
     private static final String[] WHITELIST = {
             "/api/auth/login",
             "/api/auth/register",
-            "/api-docs/**",
-            "/swagger-ui/**"
+            "/api/api-docs/**",
+            "/api/swagger-ui/**"
     };
 
     @Bean
@@ -57,8 +55,6 @@ public class SecurityConfig  {
 
         return http.build();
     }
-
-
 
 
     @Bean

@@ -1,5 +1,6 @@
 package com.openclassrooms.chatop.controller;
 
+import com.openclassrooms.chatop.dto.ErrorResDto;
 import com.openclassrooms.chatop.dto.MessageDto;
 import com.openclassrooms.chatop.mapper.MessageMapper;
 import com.openclassrooms.chatop.model.DbUser;
@@ -45,7 +46,7 @@ public class MessageController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "404", description = "User or Rental not found")
     })
-    public ResponseEntity<String> createMessage(
+    public ResponseEntity createMessage(
             @Parameter(description = "Message details", required = true)
             @RequestBody MessageDto messageDto) {
 
@@ -65,6 +66,6 @@ public class MessageController {
         message.setRental(rental);
         messageService.saveMessage(message);
 
-        return ResponseEntity.ok("Message sent with success");
+        return ResponseEntity.ok().body(new ErrorResDto("Message sent with success"));
     }
 }

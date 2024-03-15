@@ -32,18 +32,18 @@ public class AuthService {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         String email = authentication.getName();
         DbUser user = new DbUser(email,"");
-        return new UserReponseDto(email,jwtUtil.createToken(user));
+        return new UserReponseDto(jwtUtil.createToken(user));
     }
 
 
-    public String register(UserRegisterDto registerDto) {
+    public UserReponseDto register(UserRegisterDto registerDto) {
 
         DbUser user = new DbUser();
         user.setName(registerDto.getName());
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userRepository.save(user);
-        return jwtUtil.createToken(user);
+        return new UserReponseDto(jwtUtil.createToken(user));
     }
 
 

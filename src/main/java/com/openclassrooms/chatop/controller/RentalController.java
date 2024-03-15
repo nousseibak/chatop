@@ -2,10 +2,12 @@ package com.openclassrooms.chatop.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.chatop.config.media.FileHelper;
+import com.openclassrooms.chatop.dto.ErrorResDto;
 import com.openclassrooms.chatop.dto.RentalInDto;
 import com.openclassrooms.chatop.dto.RentalOutDto;
-import com.openclassrooms.chatop.mapper.RentalMapper;
+import com.openclassrooms.chatop.mapper.RentalInMapper;
 import com.openclassrooms.chatop.mapper.RentalOutMapper;
+import com.openclassrooms.chatop.model.DbUser;
 import com.openclassrooms.chatop.model.Rental;
 import com.openclassrooms.chatop.service.RentalService;
 import com.openclassrooms.chatop.service.UserService;
@@ -16,11 +18,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +39,7 @@ public class RentalController {
     private RentalService rentalService;
 
     @Autowired
-    private RentalMapper rentalMapper;
+    private RentalInMapper rentalMapper;
 
     @Autowired
     private RentalOutMapper rentalOutMapper;
@@ -80,14 +85,13 @@ public class RentalController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Create rental", description = "Create a new rental")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental created"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)
     })
-    public ResponseEntity<String> createRental(@RequestPart("rentalDto") String rentalDto, @RequestPart(value="picture", required = true)  MultipartFile media) throws IOException {
-        System.out.println("hello ");
+    public ResponseEntity createRental(@RequestPart("rentalDto") String rentalDto, @RequestPart(value="picture", required = true)  MultipartFile media) throws IOException {
 
         RentalInDto rentalInDto=new ObjectMapper().readValue(rentalDto, RentalInDto.class);
         if (rentalInDto.getName() == null || rentalInDto.getSurface() == null || rentalInDto.getPrice() == null || rentalInDto.getDescription() == null) {
@@ -99,22 +103,20 @@ public class RentalController {
         String fileName = StringUtils.cleanPath(media.getOriginalFilename());
         rental.setPicture(fileName);
 
-
         Rental rentalcreated= rentalService.saveRental(rental);
         String uploadDir = "media/" + rentalcreated.getId();
         FileHelper.saveFile(uploadDir, fileName, media);
-        System.out.println("rentalcreated "+rentalcreated);
-        return ResponseEntity.ok("Rental created!");
+        return ResponseEntity.ok().body(new ErrorResDto("Rental created!"));
     }
 
-    @PutMapping("/{rentalId}")
+    @PutMapping(value="/{rentalId}")
     @Operation(summary = "Update rental", description = "Update an existing rental")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rental updated"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content),
             @ApiResponse(responseCode = "404", description = "Rental not found")
     })
-    public ResponseEntity<String> updateRental(
+    public ResponseEntity updateRental(
             @Parameter(description = "ID of the rental to be updated", required = true)
             @PathVariable Integer rentalId, @RequestBody RentalInDto rentalInDto) {
 
@@ -132,10 +134,9 @@ public class RentalController {
         existingRental.setSurface(rentalInDto.getSurface());
         existingRental.setPrice(rentalInDto.getPrice());
         existingRental.setDescription(rentalInDto.getDescription());
-        existingRental.setOwner(userService.getUserById(rentalInDto.getOwnerId()));
 
         rentalService.saveRental(existingRental);
 
-        return ResponseEntity.ok("Rental updated!");
+        return ResponseEntity.ok().body(new ErrorResDto("Rental updated!"));
     }
 }

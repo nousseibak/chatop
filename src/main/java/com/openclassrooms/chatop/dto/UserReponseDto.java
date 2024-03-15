@@ -14,9 +14,6 @@ import java.io.Serializable;
 @Builder
 public class UserReponseDto implements Serializable {
 
-    @JsonProperty("email")
-    private String email;
-
     @JsonProperty("token")
     private String token;
 

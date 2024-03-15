@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -33,12 +34,12 @@ public class RentalOutDto implements Serializable {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("Owner")
-    private UserDto owner;
+    @JsonProperty("owner_id")
+    private Integer owner;
 
-    @JsonProperty("createdAt")
-    private Date createdAt;
+    @JsonProperty("created_at")
+    private LocalDate createdAt;
 
-    @JsonProperty("updatedAt")
-    private Date updatedAt;
+    @JsonProperty("updated_at")
+    private LocalDate updatedAt;
 }
